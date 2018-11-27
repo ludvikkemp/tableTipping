@@ -72,8 +72,9 @@ const LeagueStandingType = new GraphQLObjectType({
   name: 'LeagueStanding',
   fields: () => ({
     id: { type: GraphQLID },
-    rank: { type: GraphQLInt },
+    leagueId: { type: GraphQLID },
     teamId: { type: GraphQLID },
+    rank: { type: GraphQLInt },
     gamesPlayes: { type: GraphQLInt },
     wins: { type: GraphQLInt },
     draws: { type: GraphQLInt },
@@ -128,6 +129,13 @@ const RootQuery = new GraphQLObjectType({
       type: new GraphQLList(TeamType),
       resolve(parent, args) {
         return db.teams;
+      }
+    },
+    leagueStandings: {
+      type: new GraphQLList(LeagueStandingType),
+      args: { leagueId: { type: GraphQLID } },
+      resolve(parent, args) {
+        return _.filter(db.leagueStanding, { leagueId: args.leagueId });
       }
     }
   }
