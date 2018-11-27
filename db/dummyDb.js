@@ -98,5 +98,20 @@ module.exports = {
       username: 'victormees',
       email: 'victormees@gmail.com'
     }
+  ],
+  leagueStanding: [
+    {
+      teamId: 'LIV',
+      id: 1,
+      rank: 1,
+      gamesPlayes: 13,
+      wins: 10,
+      draws: 3,
+      losses: 0,
+      goalsScored: 28,
+      goalsConceded: 5,
+      goalDifference: 23,
+      points: 33
+    }
   ]
 };

@@ -4,7 +4,8 @@ const {
   GraphQLString,
   GraphQLSchema,
   GraphQLID,
-  GraphQLList
+  GraphQLList,
+  GraphQLInt
 } = graphql;
 const _ = require('lodash');
 
@@ -57,7 +58,30 @@ const TeamType = new GraphQLObjectType({
         // Code !!
         return _.find(db.leagues, { id: parent.leagueId });
       }
+    },
+    leagueStanding: {
+      type: LeagueStandingType,
+      resolve(parent, args) {
+        return _.find(db.leagueStanding, { teamId: parent.id });
+      }
     }
+  })
+});
+
+const LeagueStandingType = new GraphQLObjectType({
+  name: 'LeagueStanding',
+  fields: () => ({
+    id: { type: GraphQLID },
+    rank: { type: GraphQLInt },
+    teamId: { type: GraphQLID },
+    gamesPlayes: { type: GraphQLInt },
+    wins: { type: GraphQLInt },
+    draws: { type: GraphQLInt },
+    losses: { type: GraphQLInt },
+    goalsScored: { type: GraphQLInt },
+    goalsConceded: { type: GraphQLInt },
+    goalDifference: { type: GraphQLInt },
+    points: { type: GraphQLInt }
   })
 });
 
@@ -86,6 +110,24 @@ const RootQuery = new GraphQLObjectType({
       resolve(parent, args) {
         // Code To Fetch Data eg (args.id)
         return _.find(db.teams, { id: args.id });
+      }
+    },
+    nations: {
+      type: new GraphQLList(NationType),
+      resolve(parent, args) {
+        return db.nations;
+      }
+    },
+    leagues: {
+      type: new GraphQLList(LeagueType),
+      resolve(parent, args) {
+        return db.leagues;
+      }
+    },
+    teams: {
+      type: new GraphQLList(TeamType),
+      resolve(parent, args) {
+        return db.teams;
       }
     }
   }
